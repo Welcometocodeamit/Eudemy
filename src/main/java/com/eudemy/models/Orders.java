@@ -1,8 +1,7 @@
 package com.eudemy.models;
 
+import java.util.Date;
 import java.util.List;
-
-import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -12,6 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -19,46 +19,35 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Component
-public class Course {
+public class Orders {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int courseId;
+	private int id;
 	
-	private String courseName;
+	private double totlePrice;
 	
-	private String courseDescription;
+	private Date orderDate;
 	
-	private String courseLevel;
-	
-	private String image;
-	
-	private boolean fe;
-	
-	private double price;
-	
-//	one to many
-//	student
-	@ManyToMany(mappedBy = "course")
-	@JsonIgnore
-	private List<User> user;
-	
-//	one to one
-//	instructor
-//	@OneToOne
-//	@JoinColumn(name = "courseInstructor")
-//	private User courseInstructor;
-	
-//	many to one category
 	@ManyToOne
-	@JoinColumn(name = "courseCategory")
-	@JsonIgnoreProperties({"course"})
-	private Category category;
+	@JoinColumn(name = "userId")
+	@JsonIgnoreProperties({"email", "password", "gender", "userType", "course"})
+	private User user;
 	
+	@ManyToMany
+	@JoinTable(name = "order_course_table", 
+	joinColumns = {
+		@JoinColumn(name="orderId", referencedColumnName = "id")
+		
+	},
+	inverseJoinColumns = {
+			@JoinColumn(name="courseId", referencedColumnName = "courseId")
+	})
+	@JsonIgnoreProperties({"category"})
+	private List<Course> course;
 
 }

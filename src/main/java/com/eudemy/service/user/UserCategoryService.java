@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.eudemy.models.Category;
+import com.eudemy.models.ResponseWrapper;
 import com.eudemy.repositories.CategoryRepository;
 
 @Service
@@ -16,6 +17,8 @@ public class UserCategoryService {
 	
 	@Autowired
 	private CategoryRepository categoryRepository;
+	
+	
 	
 //	get all categories
 	public ResponseEntity<?> getAllCategories(){

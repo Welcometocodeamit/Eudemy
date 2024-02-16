@@ -24,8 +24,6 @@ public class UserType {
 	private int userTypeId;
 	
 	@Column
-	@Min(5)
-	@Max(50)
 	private String userType;
 
 }

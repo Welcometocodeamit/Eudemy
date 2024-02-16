@@ -3,6 +3,9 @@ package com.eudemy.service.admin;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -10,6 +13,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.eudemy.models.Category;
 import com.eudemy.models.Course;
+import com.eudemy.models.ResponseWrapper;
 import com.eudemy.repositories.CategoryRepository;
 import com.eudemy.repositories.CourseRepository;
 
@@ -21,6 +25,7 @@ public class AdminCategoryService {
 	
 	@Autowired
 	CourseRepository courseRepository;
+	@Autowired ResponseWrapper wrap;
 	
 //	add category
 	public ResponseEntity<?> addCategory(Category category){
@@ -29,8 +34,8 @@ public class AdminCategoryService {
 	  if(savedCategory == null) {
 		  throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Category not saved");
 	  }
-	  
-	  return new ResponseEntity<>("Category saved", HttpStatus.OK);
+	  wrap.setMessage("Category saved");
+	  return new ResponseEntity<>(wrap, HttpStatus.OK);
 	  
 	}
 	
@@ -41,8 +46,8 @@ public class AdminCategoryService {
 		});
 		category.setCategoryId(foundCategory.getCategoryId());
 		categoryRepository.save(category);
-		
-		return new ResponseEntity<>("Category updated", HttpStatus.OK);
+		wrap.setMessage("Category updated");
+		return new ResponseEntity<>(wrap, HttpStatus.OK);
 	}
 	
 //	delete category
@@ -50,15 +55,17 @@ public class AdminCategoryService {
 		Category foundCategory =categoryRepository.findById(id).orElseThrow(()->{
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found which is to delete");
 		});
-		List<Course> foundCourses=courseRepository.findByCategory(foundCategory);
+		Pageable page = PageRequest.of(0, 20);
+		Page<Course> foundCourses=courseRepository.findByCategory(foundCategory, page);
 		
-		foundCourses.forEach(course->{
+		foundCourses.getContent().forEach(course->{
 			course.setCategory(null);
 			courseRepository.save(course);
 		});
 		
 		categoryRepository.deleteById(id);
-		return new ResponseEntity<>("Category deleted", HttpStatus.OK);
+		wrap.setMessage("Category deleted");
+		return new ResponseEntity<>(wrap, HttpStatus.OK);
 	}
 	
 

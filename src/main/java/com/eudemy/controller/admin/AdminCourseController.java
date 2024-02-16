@@ -27,10 +27,10 @@ public class AdminCourseController {
 	private UserCourseService userService;
 	
 //	get all courses
-	@GetMapping("/courses")
-	public ResponseEntity<?> getAllCourse(){
-		return userService.getCourses();
-	}
+//	@GetMapping("/courses")
+//	public ResponseEntity<?> getAllCourse(){
+//		return userService.getCourses();
+//	}
 	
 //	add course
 	@PostMapping("/courses")
