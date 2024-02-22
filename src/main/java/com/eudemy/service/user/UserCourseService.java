@@ -47,6 +47,18 @@ public class UserCourseService {
 		if(courses.getSize()==0) {
 			return new ResponseEntity<>("Courses not found, please add some", HttpStatus.OK);
 		}
+		User u= new User();
+		u.setUserId(t.getUserId());
+		List<Orders> order=orderRepository.findByUser(u);
+		courses.getContent().forEach(course->{
+			order.forEach(or->{
+				or.getCourse().forEach(data->{
+					if(data.getCourseId()==course.getCourseId()) {
+						course.setFe(true);
+					}
+				});
+			});
+		});
 		return new ResponseEntity<>(courses, HttpStatus.OK);
 	}
 	

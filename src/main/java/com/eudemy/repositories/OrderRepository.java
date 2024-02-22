@@ -1,5 +1,6 @@
 package com.eudemy.repositories;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,5 +11,7 @@ import com.eudemy.models.User;
 public interface OrderRepository extends JpaRepository<Orders, Integer> {
 	
 	List<Orders> findByUser(User user);
+	
+	List<Orders> findByOrderDateBetween(Date fromDate, Date toDate);
 
 }

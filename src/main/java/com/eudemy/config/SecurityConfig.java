@@ -31,14 +31,14 @@ public class SecurityConfig {
         
         
         http.authorizeHttpRequests(req->req
-        		.anyRequest().permitAll()
-//        		.requestMatchers(HttpMethod.OPTIONS, "**").permitAll()
-//				.requestMatchers("/user/signup").permitAll()
-//				.requestMatchers("/swagger-ui/index.html#/**").permitAll()
-//				.requestMatchers("user/login").permitAll()
-//				.requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
-//				.requestMatchers("/admin/**").hasRole("ADMIN")
-//				.anyRequest().authenticated()
+//        		.anyRequest().permitAll()
+        		.requestMatchers(HttpMethod.OPTIONS, "**").permitAll()
+				.requestMatchers("/user/signup").permitAll()
+				.requestMatchers("/swagger-ui/index.html#/**").permitAll()
+				.requestMatchers("user/login").permitAll()
+				.requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
+				.requestMatchers("/admin/**").hasRole("ADMIN")
+				.anyRequest().authenticated()
 				);
 
         

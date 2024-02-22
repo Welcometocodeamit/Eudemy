@@ -66,7 +66,11 @@ public class AdminCourseService {
 		if(foundCourse.isEmpty()) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Course not found");
 		}
-		courseRepository.deleteById(id);
+		try {
+			courseRepository.deleteById(id);
+		}catch(Exception e) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "You can't delete this course, as some of the users purchased this course");
+		}
 		wrapper.setMessage("Course deleted");
 		return new ResponseEntity<>(wrapper, HttpStatus.OK);
 	}
